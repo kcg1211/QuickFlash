@@ -4,8 +4,13 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+const fs = require("fs"); 
+
 const options = require("./db");
-const knex = require("knex")(options); // connecting db.js to knex
+const knex = require("knex")(options); // **** connecting db.js to knex ****
+const helmet = require('helmet');
+const cors = require('cors');
+
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -17,16 +22,22 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 app.use(logger('dev'));
+const logStream = fs.createWriteStream(path.join(__dirname, "access.txt"), {
+  flags: "a",
+});
+app.use(logger("common", { stream: logStream })); // **** saving logs into access.txt in root file using Morgan ****
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
 //**** initialsing the db with knex****
 app.use((req, res, next) => {
   req.db = knex;
   next();
 })
+
+app.use(logger('common')); app.use(helmet()); //**** initialsing helmet ****
+app.use(cors()); //**** initialsing cors ****
 
 app.use("/version", (req, res) => {
   req.db.raw("SELECT VERSION()").then(version => res.json(version[0]))

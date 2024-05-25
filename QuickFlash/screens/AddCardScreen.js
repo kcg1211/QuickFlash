@@ -4,9 +4,11 @@ import GlobalLayout from "@components/Layout";
 
 export default function AddCardScreen() {
 
+    const [description, setDescription] = useState("Input a question and an answer to create a new flashcard")
     const [question, setQuestion] = useState("");
     const [answer, setAnswer] = useState("");
-    const[errors, setErrors] = useState({})
+    const [errors, setErrors] = useState({})
+    const API_URL = `http://192.168.0.183:8000`;
 
     const validateForm = () => {
         let errors = {};
@@ -23,7 +25,12 @@ export default function AddCardScreen() {
 
     const handleSubmission = () => {
         if(validateForm()){
-            console.log(`Your new flashcard has been updated. Question: ${question}, Answer: ${answer}`);
+            // console.log(`Your new flashcard has been updated. Question: ${question}, Answer: ${answer}`);
+            addNewCard();
+            setDescription("A new flashcard has been added! ");
+            setTimeout(() => {
+                setDescription("Input a question and an answer to create a new flashcard");
+              }, 4000);
             setQuestion("");
             setAnswer("");
             setErrors({});
@@ -31,11 +38,28 @@ export default function AddCardScreen() {
 
     }
 
+    function addNewCard() {
+        fetch(`${API_URL}/api/newcard`, {
+          method: "POST",
+          body: JSON.stringify({ 
+                "Question":question,
+                "Answer":answer
+            }),
+          headers: {
+              "Content-type": "application/json"
+                 }
+        })
+        .then((res) => res.json())
+        .then((res) => { 
+          console.log(res);
+        })
+      }
+
     return(
         <GlobalLayout >
-            <KeyboardAvoidingView style={styles.keyboardAvoidingView} behavior="padding" keyboardVerticalOffset={100}>
+            <KeyboardAvoidingView style={styles.keyboardAvoidingView}  keyboardVerticalOffset={100}>
                 <View style={styles.container}>
-                    <Text style={styles.text}>Hi</Text>
+                    <Text style={styles.text}>{description}</Text>
                     <TextInput 
                         style={styles.textInput} 
                         placeholder=" New question"

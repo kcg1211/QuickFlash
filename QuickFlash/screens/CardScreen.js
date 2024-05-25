@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { ScrollView, RefreshControl, TouchableHighlight, Text, StyleSheet } from "react-native";
+import { ScrollView, RefreshControl, TouchableHighlight, Text, StyleSheet, View } from "react-native";
 import GlobalLayout from "@components/Layout";
 import Flashcards from "@components/Flashcards";
 import { GlobalFontSize } from '@styles/globalFontSize';
@@ -30,9 +30,11 @@ export default function CardScreen() {
   
   return (
     <GlobalLayout>
-      <TouchableHighlight style={styles.touchableOpacity} underlayColor={"#DEB426"} onPress={shuffleFlashcards}>
+      <View style={styles.view}>
+      <TouchableHighlight style={styles.touchableHighlight} underlayColor={"#DEB426"} onPress={shuffleFlashcards}>
         <Text style={[styles.text, globalFontSize.text]}>Shuffle</Text>
-        </TouchableHighlight>
+      </TouchableHighlight>
+      </View>
       <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}></RefreshControl>}>
         {/* value of refresh is being passed into Flashcard as props */}
         <Flashcards refresh={refresh} isShuffle={isShuffle}/>
@@ -42,10 +44,15 @@ export default function CardScreen() {
 }
 
 const styles = StyleSheet.create({
-  touchableOpacity: {
-    flex: 0.12,
+  view: {
+    flexDirection: "row",
+    justifyContent: 'center',
+  },
+  touchableHighlight: {
     flexDirection: "row",
     width: 105,
+    height: 50,
+    marginTop: -30,
     marginBottom: 20,
     backgroundColor: "#FDDC2A",
     justifyContent: 'center',
