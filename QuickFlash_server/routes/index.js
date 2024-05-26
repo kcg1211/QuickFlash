@@ -6,6 +6,7 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
+// ====================== GET method ====================== 
 router.get("/api/flashcard", async (req, res) => {
   try{
     const flashcards = await req.db.from("card").select("cardID", "question", "answer");
@@ -18,6 +19,7 @@ router.get("/api/flashcard", async (req, res) => {
 
 })
 
+// ====================== POST method ====================== 
 router.post('/api/newcard', (req, res) => {
   if (!req.body.Question || !req.body.Answer) {
       res.status(400).json({
@@ -47,6 +49,7 @@ router.post('/api/newcard', (req, res) => {
   }
 })
 
+// ====================== DELETE method ====================== 
 router.delete('/api/deletecard', (req, res) => {
   if (!req.body.CardID) {
       res.status(400).json({
@@ -73,9 +76,42 @@ router.delete('/api/deletecard', (req, res) => {
     });
 
   }
-
-
 })
+
+// ====================== PUT method ====================== 
+router.put('/api/editcard', (req, res) => {
+  if (!req.body.CardID || !req.body.Question || !req.body.Answer) {
+      res.status(400).json({
+          message: `Error editing flashcard`
+      });
+      console.log(`Error on request body:`, JSON.stringify(req.body));
+
+  } else {
+      const filter = {
+          "CardID": req.body.CardID,
+      }
+
+      const cardContent = {
+          "Question": req.body.Question,
+          "Answer": req.body.Answer
+      };
+
+      req.db('card').where(filter).update(cardContent)
+    .then(_ => {
+        res.status(201).json({
+            message: `Successful editted flashcard - CardID: ${req.body.CardID}, Question: ${req.body.Question}, Answer: ${req.body.Answer}`
+        });
+        console.log(`successful edit:`, JSON.stringify(cardContent));
+
+    }).catch(error => {
+        res.status(500).json({
+            message: 'Database error - not updated'
+        });
+    });
+
+  }
+})
+
 
 
 module.exports = router;

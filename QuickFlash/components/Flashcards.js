@@ -3,6 +3,7 @@ import { View, StyleSheet, TouchableHighlight, Text, ActivityIndicator, Touchabl
 import { useFlashcards } from '@components/FlashcardAPI';
 import { GlobalFontSize } from '@styles/globalFontSize';
 import { GestureHandlerRootView, RectButton, Swipeable } from 'react-native-gesture-handler';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 
 export default function Flashcards({ refresh, isShuffle }) {
@@ -11,6 +12,7 @@ export default function Flashcards({ refresh, isShuffle }) {
 
     const {loading, flashcards, error, fetchFlashcards} = useFlashcards();
     const [shuffledFlashcards, setShuffledFlashcards] = useState([]);
+
     const API_URL = `http://192.168.0.183:8000`;
 
     // ==================================== Fetching flahcards from API ====================================
@@ -57,8 +59,10 @@ export default function Flashcards({ refresh, isShuffle }) {
     }, [isShuffle])
 
     // ==================================== Delete function of flahcards ====================================
+
+    // flashcard with the corresponding cardID will be deleted from view and database
     function deleteCard(cardID) {
-        setShuffledFlashcards(shuffledFlashcards.filter(card => card.cardID !== cardID));
+        setShuffledFlashcards(shuffledFlashcards.filter(card => card.cardID !== cardID)); 
         fetch(`${API_URL}/api/deletecard`, {
             method: "DELETE",
             body: JSON.stringify({ 
@@ -74,6 +78,30 @@ export default function Flashcards({ refresh, isShuffle }) {
           })
     };
 
+    // ==================================== Edit function of flahcards ====================================
+    function editCard(cardID, newQuestion, newAnswer) {
+        setShuffledFlashcards(shuffledFlashcards.map(card => 
+            card.cardID === cardID ? { ...card, question: newQuestion, answer: newAnswer } : card
+        )); 
+        fetch(`${API_URL}/api/editcard`, {
+            method: "PUT",
+            body: JSON.stringify({ 
+                  "CardID": cardID,
+                  "Question": newQuestion,
+                  "Answer": newAnswer,
+              }),
+            headers: {
+                "Content-type": "application/json"
+                   }
+          })
+          .then((res) => res.json())
+          .then((res) => { 
+            console.log(res);
+          })
+    };
+
+
+    // ==================================== Showing the flashcards with loading and error handling ====================================
     if (loading){
             <View>
                 <ActivityIndicator />
@@ -94,6 +122,7 @@ export default function Flashcards({ refresh, isShuffle }) {
                 key={flashcards.cardID} 
                 cardID={flashcards.cardID} 
                 onDelete={deleteCard}
+                onEdit={editCard}
             />)}
         </View>
     )
@@ -104,27 +133,28 @@ export default function Flashcards({ refresh, isShuffle }) {
         const globalFontSize = GlobalFontSize();
 
         const [isVisible, setIsVisible] = useState(false);
-        
+       
         function toggleAnswer(){
             setIsVisible(!isVisible);
         }
 
         function renderLeftActions(){
             return (
-              <RectButton style={styles.leftAction} onPress={() => Alert.alert('Edit', 'You can edit this item.')}>
-                <Text style={styles.actionText}>Edit</Text>
+              <RectButton style={styles.leftAction} onPress={() => {confirmEdit()}}>
+                <MaterialCommunityIcons name="square-edit-outline" size={25} color="white"/>
               </RectButton>
             );
           };
 
         function renderRightActions(){
-        return (
-            <RectButton style={styles.rightAction} onPress={() => {confirmDelete()}}>
-                <Text style={styles.actionText}>Delete</Text>
-            </RectButton>
-        );
-        };
+            return (
+                <RectButton style={styles.rightAction} onPress={() => {confirmDelete()}}>
+                    <MaterialCommunityIcons name="delete" size={25} color="white"/>
+                </RectButton>
+            );
+            };
 
+        // alert box to ask if the user want to delete the flashcard
         function confirmDelete(){
             Alert.alert(
                 "Delete",
@@ -135,8 +165,47 @@ export default function Flashcards({ refresh, isShuffle }) {
                 ]
             );
         };
-        
 
+        // two alert boxes to prompt the user for a new question and a new answer for the flashcard
+        function confirmEdit(){
+            // for iOS only
+            Alert.prompt(
+                "Edit Question",
+                "Please enter the new question:",
+                [
+                    { text: "Cancel", style: "cancel" },
+                    {
+                        text: "OK",
+                        onPress: (newQuestion) => {
+                            if (newQuestion) {
+                                Alert.prompt(
+                                    "Edit Answer",
+                                    "Please enter the new answer:",
+                                    [
+                                        { text: "Cancel", style: "cancel" },
+                                        {
+                                            text: "OK",
+                                            onPress: (newAnswer) => {
+                                                if (newAnswer) {
+                                                    props.onEdit(props.cardID, newQuestion, newAnswer);
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    'plain-text',
+                                    props.answer // existing answer as the default entry for new answer
+                                );
+                            }
+                        }
+                    }
+                ],
+                'plain-text',
+                props.question // existing question as the default entry for new question
+            );
+        }
+
+
+        
         return(
             <GestureHandlerRootView>
                     <Swipeable
@@ -188,26 +257,21 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     leftAction: {
-        flex: 0.3,
+        flex: 0.1,
         backgroundColor: '#497AFC',
         justifyContent: 'center',
-        alignItems: 'flex-start',
+        alignItems: 'center',
         paddingHorizontal: 20,
         marginBottom: 20,
         borderRadius: 30,
-      },
-      rightAction: {
-        flex: 0.3,
+    },
+    rightAction: {
+        flex: 0.1,
         backgroundColor: '#DD2C00',
         justifyContent: 'center',
-        alignItems: 'flex-end',
+        alignItems: 'center',
         paddingHorizontal: 20,
         marginBottom: 20,
         borderRadius: 30,
-      },
-      actionText: {
-        color: '#fff',
-        fontWeight: '600',
-        padding: 20,
-      },
+    },
   });
