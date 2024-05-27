@@ -4,6 +4,7 @@ import { useFlashcards } from '@components/FlashcardAPI';
 import { GlobalFontSize } from '@styles/globalFontSize';
 import { GestureHandlerRootView, RectButton, Swipeable } from 'react-native-gesture-handler';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 export default function Flashcards({ refresh, isShuffle }) {
@@ -17,7 +18,7 @@ export default function Flashcards({ refresh, isShuffle }) {
 
     // ==================================== Fetching flahcards from API ====================================
 
-    /* fetchFlashcards() is a function of FlashcardAPI. It handles getting the cards from API and returning the value of flashcards and statuses.
+/* fetchFlashcards() is a function of FlashcardAPI. It handles getting the cards from API and returning the value of flashcards and statuses.
     Everytime when the view is being refreshed, cards will be retrieved from the API again. */
     useEffect(() => {
         if (refresh) {
@@ -36,6 +37,7 @@ export default function Flashcards({ refresh, isShuffle }) {
             setShuffledFlashcards(flashcards);
         }
     }, [flashcards]);
+
 
     
     // ==================================== Shuffle function of flahcards ====================================

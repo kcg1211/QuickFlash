@@ -36,24 +36,5 @@ export function useFlashcards() {
         fetchFlashcards();
     }, [])
     
-    // useEffect(() => {
-    //   (
-    //     async() => {
-    //       try{
-    //         setFlashcards(await getFlashcards()); 
-    //         setLoading(false);
-    //         setError(null)
-    //         console.log(flashcards)
-    //       }
-    //       // setting an error message if the API is not able to retrieve data
-    //       catch{
-    //         setLoading(false);
-    //         setError("ERROR: Could not retrieve data. Please try refreshing.")
-    //       }
-    //     }
-    //   ) ();
-    //   }, []);
-  
-    
     return { loading, flashcards, error, fetchFlashcards };
     }

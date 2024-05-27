@@ -10,7 +10,10 @@
 
 -- INSERT INTO card (question, answer) VALUES("食べる", "to eat");
 
-INSERT INTO card (question, answer) VALUES("歩く", "to walk");
+-- INSERT INTO card (question, answer) VALUES("歩く", "to walk");
 SELECT * FROM card;
+
+-- INSERT INTO `user` (email, username, `hash`) VALUES("test@gmail.com", "test", "123");
+-- SELECT * FROM `user`;
 
 

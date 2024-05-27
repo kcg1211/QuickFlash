@@ -30,6 +30,7 @@ export default function CardScreen() {
   
   return (
     <GlobalLayout>
+      <Text>Ver 1</Text>
       <View style={styles.view}>
       <TouchableHighlight style={styles.touchableHighlight} underlayColor={"#DEB426"} onPress={shuffleFlashcards}>
         <Text style={[styles.text, globalFontSize.text]}>Shuffle</Text>

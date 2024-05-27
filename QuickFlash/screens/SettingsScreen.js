@@ -28,7 +28,7 @@ export default function SettingsScreen() {
             trackColor={{ false: "#767577", true: "#81b0ff" }}
             // trackColor prop: set the color of the switch track when the switch is in the on and off positions
         />
-        <Text style={globalFontSize.text}>Large Text</Text>
+        <Text style={globalFontSize.text}> Large Text</Text>
       </View>
     </GlobalLayout>
   );

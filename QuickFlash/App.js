@@ -8,6 +8,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import CardScreen from "@screens/CardScreen";
 import SettingsScreen from "@screens/SettingsScreen";
 import AddCardScreen from "@screens/AddCardScreen";
+import AccountScreen from "@screens/AccountScreen";
 
 
 SplashScreen.preventAutoHideAsync();
@@ -40,6 +41,10 @@ export default function App() {
                   iconName = "cog"
                   iconColor = focused ? "#509CD5" : color;
                 }
+                else if (route.name === "Account"){
+                  iconName = "cog"
+                  iconColor = focused ? "#509CD5" : color;
+                }
                 return <MaterialCommunityIcons name={iconName} size={size} color={iconColor} />;
               },
               tabBarLabel: ({ focused, color }) => {
@@ -51,7 +56,10 @@ export default function App() {
                   label = "Add Cards";
                 }
                 else if (route.name === "Settings") {
-                  label = "Preferences";
+                  label = "Settings";
+                }
+                else if (route.name === "Account") {
+                  label = "Account";
                 }
                 return <Text style={[{ color: focused ? "#509CD5" : color }, styles.text]}>{label}</Text>;
               },
@@ -76,6 +84,7 @@ export default function App() {
           <Tab.Screen name="Cards" component={CardScreen} />
           <Tab.Screen name="Add Cards" component={AddCardScreen} />
           <Tab.Screen name="Settings" component={SettingsScreen} />
+          <Tab.Screen name="Account" component={AccountScreen} />
         </Tab.Navigator>
       </FontSizeProvider>
     </NavigationContainer>
