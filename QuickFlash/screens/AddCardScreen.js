@@ -105,9 +105,9 @@ const styles = StyleSheet.create({
         backgroundColor: "white"
     },
     touchableOpacity: {
-        flex: 0.12,
         flexDirection: "row",
         width: 130,
+        height: 45,
         marginTop: 20,
         marginBottom: 20,
         marginLeft: 103,

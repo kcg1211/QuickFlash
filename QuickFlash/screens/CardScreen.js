@@ -50,9 +50,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   touchableHighlight: {
-    flexDirection: "row",
-    width: 105,
-    height: 50,
+    width: 130,
+    height: 45,
     marginTop: -30,
     marginBottom: 20,
     backgroundColor: "#FDDC2A",

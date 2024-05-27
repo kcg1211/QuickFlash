@@ -9,6 +9,7 @@ export default function RegisterForm(props){
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [isRegistered, setIsRegistered] = useState(false)
     
     const [errors, setErrors] = useState({})
     const API_URL = `http://192.168.0.183:8000`;
@@ -41,26 +42,27 @@ export default function RegisterForm(props){
     }
 
     function userRegister() {
-        // fetch(`${API_URL}/users/login`, {
-        //   method: "POST",
-        //   body: JSON.stringify({ 
-        //         "emailOrUsername":username,
-        //         "password":password
-        //     }),
-        //   headers: {
-        //       "Content-type": "application/json"
-        //     }
-        // })
-        // .then((res) => res.json())
-        // .then((res) => { 
-        //     if (res.error) {
-        //         console.log(res)
-        //         Alert.alert("Incorrect username or password");
-        //     } else {
-        //         console.log(res)
-        //         setHasLoggedIn(true);
-        //     }
-        // })
+        fetch(`${API_URL}/users/register`, {
+          method: "POST",
+          body: JSON.stringify({ 
+                "username":username,
+                "email": email,
+                "password":password
+            }),
+          headers: {
+              "Content-type": "application/json"
+            }
+        })
+        .then((res) => res.json())
+        .then((res) => { 
+            if (res.error) {
+                console.log(res);
+                Alert.alert("Duplicated username found. Please input again.");
+            } else {
+                console.log(res);
+                Alert.alert("Account registered.")
+            }
+        })
       }
 
     return(
@@ -106,7 +108,7 @@ export default function RegisterForm(props){
                         style={styles.touchableOpacity} 
                         underlayColor={"#DEB426"}
                         onPress={() => props.onReturn()}>
-                            <Text style={[globalFontSize.text, styles.text]}>Log out</Text>
+                            <Text style={[globalFontSize.text, styles.text]}>Go back</Text>
                     </TouchableHighlight>
                     
                 </KeyboardAvoidingView>

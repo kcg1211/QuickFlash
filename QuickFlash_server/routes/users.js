@@ -8,6 +8,44 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
+// ====================== REGISTER ======================
+router.post("/register", (req, res) => {
+  const username = req.body.username;
+  const email = req.body.email;
+  const password = req.body.password;
+
+  if (!username || !email || !password) {
+    res.status(400).json({
+      error: true,
+      message: "Request body incomplete - email and password needed"
+    });
+  }
+
+  const queryUsers = req.db.from("user").select("username").where("username", "=", username);
+  // **** check if user already exists in database ****
+  queryUsers.then(users => {
+    if (users.length > 0) {
+      res.status(400).json({
+        error: true,
+        message: "User already exists"
+      });
+      return
+    }
+    // **** if user is new, hash their password
+    const saltRounds = 10;
+    const hash = bcrypt.hashSync(password, saltRounds);
+    return req.db.from("user").insert({ username, email, hash });
+
+  }).then(() => {
+    res.status(201).json({
+      error: false,
+      message: "User created"
+    })
+  })
+});
+
+
+// ====================== LOGIN ======================
 // Verifying user details for login and generating a JWT token
 router.post("/login", (req, res) => {
   const emailOrUsername = req.body.emailOrUsername;

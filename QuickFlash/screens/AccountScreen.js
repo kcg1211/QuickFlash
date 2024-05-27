@@ -19,7 +19,7 @@ export default function LoginScreen() {
     const validateForm = () => {
         let errors = {};
         if(!username){
-            errors.username = "Please input a user name or an email address"
+            errors.username = "Please input a username or an email address"
         };
         if(!password){
             errors.password = "Please input a password"
