@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const authorise = require('../authorise');
 
 // Get users listing
 router.get('/', function(req, res, next) {
@@ -58,6 +59,8 @@ router.post("/login", (req, res) => {
     });
   }
 
+  /* Only username will be queried in the database, meaning that email address is only used for validating login. 
+  All API interaction will be based on username afterwards*/
   const queryUsers = req.db.from("user")
     .select("username", "hash")
     .where("email", "=", emailOrUsername)
@@ -71,38 +74,34 @@ router.post("/login", (req, res) => {
       });
     }
     else{
-      return res.status(200).json({
-        error: false,
-        message: "Successful login"
+      console.log(users[0])
+      const user = users[0];
+      return bcrypt.compare(password, user.hash).then(match => {
+        if (!match) {
+          return res.status(401).json({
+            error: true,
+            message: "Wrong password"
+          });
+        }
+        else{
+          const secretKey = "secretKey" // Secret key should be stored in .env
+          const expires_in = 60 * 60 * 24; // 24 hours
+
+          const exp = Math.floor(Date.now() / 1000) + expires_in; // JWT expiration time in seconds
+          const token = jwt.sign({ emailOrUsername, exp }, secretKey);
+
+          return res.json({ token_type: "Bearer", token, expires_in });
+        }
       });
     }
-  });
+  })
+  .catch(error => {
+        return res.status(500).json({
+          error: true,
+          message: "Internal server error"
+        });
+      });
 })
-//     const user = users[0];
-//     return bcrypt.compare(password, user.hash).then(match => {
-//       if (!match) {
-//         return res.status(401).json({
-//           error: true,
-//           message: "Wrong password"
-//         });
-//       }
-
-//       const secretKey = "secretKey" // Secret key should be stored in .env
-//       const expires_in = 60 * 60 * 24; // 24 hours
-
-//       const exp = Math.floor(Date.now() / 1000) + expires_in; // JWT expiration time in seconds
-//       const token = jwt.sign({ username, exp }, secretKey);
-
-//       return res.json({ token_type: "Bearer", token, expires_in });
-//     });
-//   })
-//   .catch(error => {
-//     return res.status(500).json({
-//       error: true,
-//       message: "Internal server error"
-//     });
-//   });
-// });
 
 // // Middleware for authorization
 // const authorize = (req, res, next) => {
@@ -131,7 +130,7 @@ router.post("/login", (req, res) => {
 //       });
 //     }
 
-//     req.username = decoded.username;
+//     req.emailOrUsername = decoded.emailOrUsername;
 //     next();
 //   } catch (err) {
 //     return res.status(401).json({
@@ -142,9 +141,11 @@ router.post("/login", (req, res) => {
 //   }
 // };
 
-// // Authorization middleware is executed inside the router
-// router.post("/downloadcard", authorize, function(req, res) {
-//   res.json({ doSomething: req.username });
-// });
+// Authorization middleware is executed inside the router
+router.get("/viewcard", authorise,(req, res) => {
+  // const flashcards = await req.db.from("card").select("cardID", "question", "answer");
+  //   res.json({error: false, flashcards})
+  res.json({doSomething: "j"})
+});
 
 module.exports = router;

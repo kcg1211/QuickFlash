@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableHighlight, KeyboardAvoidingView, Alert } from "react-native";
+import { View, Text, TextInput, StyleSheet, TouchableHighlight, KeyboardAvoidingView, Alert, Image } from "react-native";
 import GlobalLayout from "@components/Layout";
 import { GlobalFontSize } from '@styles/globalFontSize';
+import profilePicture from '@assets/defaultProfile2.jpg';
+import * as Linking from 'expo-linking';
 
 import RegisterForm from '@components/RegisterForm';
 
@@ -12,6 +14,7 @@ export default function LoginScreen() {
     const [password, setPassword] = useState("");
     const [hasLoggedIn, setHasLoggedIn] = useState(false);
     const [register, setRegister] = useState(false);
+
     
     const [errors, setErrors] = useState({})
     const API_URL = `http://192.168.0.183:8000`;
@@ -32,7 +35,6 @@ export default function LoginScreen() {
     const handleLogin = () => {
         if(validateForm()){
             userLogin();
-            setUsername("");
             setPassword("");
             setErrors({});
         }
@@ -56,7 +58,9 @@ export default function LoginScreen() {
                 console.log(res)
                 Alert.alert("Incorrect username or password");
             } else {
-                console.log(res)
+                console.log(res);
+                const token = res.token;
+                localStorage.setItem('authToken', token);
                 setHasLoggedIn(true);
             }
         })
@@ -90,25 +94,27 @@ export default function LoginScreen() {
                         />
                         {errors.password && <Text style={[globalFontSize.text, styles.errorText]}>{errors.password}</Text>}
                         
-                        <TouchableHighlight 
-                            style={styles.touchableOpacity} 
-                            underlayColor={"#DEB426"}
-                            onPress={handleLogin}>
-                                <Text style={[globalFontSize.text, styles.text]}>Login</Text>
-                        </TouchableHighlight>
-                        
+                        <View style={styles.touchableHighlightView}>
+                            <TouchableHighlight 
+                                style={styles.touchableHighlight} 
+                                underlayColor={"#DEB426"}
+                                onPress={handleLogin}>
+                                    <Text style={[globalFontSize.text, styles.text]}>Login</Text>
+                            </TouchableHighlight>
+                        </View>
+
                 </KeyboardAvoidingView>
 
                 <View style={styles.view}>
                     <Text style={[globalFontSize.text, styles.text]}>Don't have an account yet?</Text>
-
-                    <TouchableHighlight 
-                        style={styles.touchableOpacity} 
-                        underlayColor={"#DEB426"}
-                        onPress={() => setRegister(true)}>
-                            <Text style={[globalFontSize.text, styles.text]}>Register</Text>
-                    </TouchableHighlight>
-
+                    <View style={styles.touchableHighlightView}>
+                        <TouchableHighlight 
+                            style={styles.touchableHighlight} 
+                            underlayColor={"#DEB426"}
+                            onPress={() => setRegister(true)}>
+                                <Text style={[globalFontSize.text, styles.text]}>Register</Text>
+                        </TouchableHighlight>
+                    </View>
                 </View>
             </GlobalLayout>
         )
@@ -117,14 +123,41 @@ export default function LoginScreen() {
     else if(hasLoggedIn){
         return(
             <GlobalLayout>
-                <Text style={[globalFontSize.text, styles.text]}>You have already logged in</Text>
-                <TouchableHighlight 
-                    style={styles.touchableOpacity} 
-                    underlayColor={"#DEB426"}
-                    onPress={() => setHasLoggedIn(false)}>
-                        <Text style={[globalFontSize.text, styles.text]}>Log out</Text>
-                </TouchableHighlight>
+                <View style={styles.accountContainer}>
+                        <Image source={profilePicture} style={{width: 70, height: 70}}></Image>
+                        <Text style={[globalFontSize.text, styles.accountText]}>Hello {username}!</Text>
+
+                        <TouchableHighlight 
+                            style={styles.accountTouchableHighlight} 
+                            underlayColor={"#DEB426"}
+                            onPress={() => {
+                               
+                            }}>
+                                <Text style={[globalFontSize.text, styles.text]}>Download flashcards</Text>
+                        </TouchableHighlight>
+
                 
+                        <TouchableHighlight 
+                            style={styles.accountTouchableHighlight} 
+                            underlayColor={"#DEB426"}
+                            onPress={() => {
+                                Alert.alert("Coming soon")
+                                }
+                            }>
+                                <Text style={[globalFontSize.text, styles.text]}>Change password</Text>
+                        </TouchableHighlight>
+
+                </View>
+
+                <View style={[styles.touchableHighlightView, {marginTop: 30}]}>
+                    <TouchableHighlight 
+                        style={styles.touchableHighlight} 
+                        underlayColor={"#DEB426"}
+                        onPress={() => [setHasLoggedIn(false), setUsername("")]}>
+                            <Text style={[globalFontSize.text, styles.text]}>Log out</Text>
+                    </TouchableHighlight>
+                </View>
+            
             </GlobalLayout>
         )
     }
@@ -152,12 +185,16 @@ const styles = StyleSheet.create({
         padding: 20,
         backgroundColor: "white"
     },
-    touchableOpacity: {
+    touchableHighlightView:{
+        flexDirection: "column",
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    touchableHighlight: {
         flexDirection: "row",
         width: 130,
         height: 45,
         marginTop: 20,
-        marginLeft: 103,
         backgroundColor: "#FDDC2A",
         justifyContent: 'center',
         alignItems: 'center',
@@ -171,5 +208,33 @@ const styles = StyleSheet.create({
     },
     view: {
         flex: 1
+    },
+    accountContainer: {
+        flex: 0.6,
+        backgroundColor: "white",
+        borderRadius: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    accountText: {
+        fontSize: 20,
+        fontWeight: "bold",
+        marginTop: 10,
+        marginBottom: 20,
+        textAlign: "center",
+    },
+    accountText2: {
+        marginTop: 35,
+        textAlign: "center",
+    },
+    accountTouchableHighlight: {
+        flexDirection: "row",
+        width: 240,
+        height: 45,
+        marginTop: 25,
+        backgroundColor: "#FDDC2A",
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 100,
     }
 })
