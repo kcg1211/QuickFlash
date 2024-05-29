@@ -4,6 +4,7 @@ import GlobalLayout from "@components/Layout";
 import { GlobalFontSize } from '@styles/globalFontSize';
 import profilePicture from '@assets/defaultProfile2.jpg';
 import * as Linking from 'expo-linking';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 import RegisterForm from '@components/RegisterForm';
@@ -41,29 +42,42 @@ export default function LoginScreen() {
         }
 
     }
-
-    function userLogin() {
-        fetch(`${API_URL}/users/login`, {
-          method: "POST",
-          body: JSON.stringify({ 
-                "emailOrUsername":username,
-                "password":password
-            }),
-          headers: {
-              "Content-type": "application/json"
-            }
-        })
-        .then((res) => res.json())
-        .then((res) => { 
+    async function userLogin() {
+        try {
+            const response = await fetch(`${API_URL}/users/login`, {
+                method: "POST",
+                body: JSON.stringify({ 
+                    "emailOrUsername": username,
+                    "password": password
+                }),
+                headers: {
+                    "Content-type": "application/json"
+                }
+            });
+            const res = await response.json();
             if (res.error) {
-                console.log(res)
+                console.log(res);
                 Alert.alert("Incorrect username or password");
             } else {
                 console.log(res);
+                const token = res.token; // Retrieve the token from the response
+                await AsyncStorage.setItem('authToken', token); // Store the token in AsyncStorage
                 setHasLoggedIn(true);
             }
-        })
-      }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    async function userLogout() {
+        try {
+            await AsyncStorage.removeItem('authToken');
+            setHasLoggedIn(false);
+            console.log('User logged out');
+        } catch (error) {
+            console.error('Error removing auth token:', error);
+        }
+    }
 
     function returnAccountScreen(){
         setHasLoggedIn(false);
@@ -152,7 +166,7 @@ export default function LoginScreen() {
                     <TouchableHighlight 
                         style={styles.touchableHighlight} 
                         underlayColor={"#DEB426"}
-                        onPress={() => [setHasLoggedIn(false), setUsername("")]}>
+                        onPress={() => {userLogout()}}>
                             <Text style={[globalFontSize.text, styles.text]}>Log out</Text>
                     </TouchableHighlight>
                 </View>
