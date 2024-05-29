@@ -1366,3 +1366,13 @@
 ::ffff:192.168.0.181 - - [29/May/2024:06:25:31 +0000] "GET /users/viewcard HTTP/1.1" 401 57
 ::ffff:127.0.0.1 - - [29/May/2024:06:27:11 +0000] "GET /users/viewcard HTTP/1.1" 500 1879
 ::1 - - [29/May/2024:06:27:12 +0000] "GET /stylesheets/style.css HTTP/1.1" 304 -
+::ffff:127.0.0.1 - - [29/May/2024:06:27:49 +0000] "GET /users/viewcard HTTP/1.1" 200 19
+::ffff:192.168.0.181 - - [29/May/2024:06:28:10 +0000] "GET /users/viewcard HTTP/1.1" 401 57
+::ffff:192.168.0.181 - - [29/May/2024:06:35:31 +0000] "GET /api/flashcard HTTP/1.1" 304 -
+::ffff:192.168.0.181 - - [29/May/2024:06:35:38 +0000] "POST /users/login HTTP/1.1" 200 213
+::ffff:192.168.0.181 - - [29/May/2024:06:45:17 +0000] "POST /users/login HTTP/1.1" 200 213
+::ffff:192.168.0.181 - - [29/May/2024:06:45:49 +0000] "POST /users/login HTTP/1.1" 200 213
+::ffff:192.168.0.181 - - [29/May/2024:06:46:33 +0000] "GET /api/flashcard HTTP/1.1" 304 -
+::ffff:192.168.0.181 - - [29/May/2024:06:46:38 +0000] "POST /users/login HTTP/1.1" 200 213
+::ffff:192.168.0.181 - - [29/May/2024:06:46:43 +0000] "GET /users/viewcard HTTP/1.1" 401 57
+::ffff:192.168.0.181 - - [29/May/2024:06:46:50 +0000] "POST /users/login HTTP/1.1" 200 213

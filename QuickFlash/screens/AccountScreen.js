@@ -5,6 +5,7 @@ import { GlobalFontSize } from '@styles/globalFontSize';
 import profilePicture from '@assets/defaultProfile2.jpg';
 import * as Linking from 'expo-linking';
 
+
 import RegisterForm from '@components/RegisterForm';
 
 export default function LoginScreen() {
@@ -59,8 +60,6 @@ export default function LoginScreen() {
                 Alert.alert("Incorrect username or password");
             } else {
                 console.log(res);
-                const token = res.token;
-                localStorage.setItem('authToken', token);
                 setHasLoggedIn(true);
             }
         })
@@ -131,7 +130,7 @@ export default function LoginScreen() {
                             style={styles.accountTouchableHighlight} 
                             underlayColor={"#DEB426"}
                             onPress={() => {
-                               
+                                Linking.openURL(`${API_URL}/users/viewcard`);
                             }}>
                                 <Text style={[globalFontSize.text, styles.text]}>Download flashcards</Text>
                         </TouchableHighlight>
