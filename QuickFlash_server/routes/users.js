@@ -142,10 +142,42 @@ router.post("/login", (req, res) => {
 // };
 
 // Authorization middleware is executed inside the router
-router.get("/viewcard", authorise,(req, res) => {
-  // const flashcards = await req.db.from("card").select("cardID", "question", "answer");
-  //   res.json({error: false, flashcards})
-  res.json({doSomething: "j"})
+router.get("/viewcard", authorise, async (req, res) => {
+  const flashcards = await req.db.from("card").select("cardID", "question", "answer");
+    res.json({error: false, flashcards})
+  // res.json({doSomething: "j"})
 });
+
+router.put('/changepassword', authorise, (req, res) => {
+  const username = req.body.username
+  const newPassword = req.body.newPassword
+
+  if (!username || !newPassword ) {
+    res.status(400).json({
+      error: true,
+      message: "Request body incomplete - new password needed"
+    });
+    return;
+
+  } else {
+
+      const saltRounds = 10;
+      const hash = bcrypt.hashSync(newPassword, saltRounds);
+
+      req.db("user").where("username", "=", username).update({hash: hash})
+    .then(_ => {
+        res.status(201).json({
+            message: `Successful changing password - Username: ${req.body.username}`
+        });
+        console.log(`successful password change,: Username ${req.body.username}`);
+
+    }).catch(error => {
+        res.status(500).json({
+            message: 'Database error - not updated'
+        });
+    });
+
+  }
+})
 
 module.exports = router;

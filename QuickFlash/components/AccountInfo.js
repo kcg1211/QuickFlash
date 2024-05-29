@@ -1,64 +1,76 @@
+import { useState } from 'react';
 import { View, StyleSheet, Image, Text, TouchableHighlight, Alert } from "react-native";
 import { GlobalFontSize } from '@styles/globalFontSize';
 import profilePicture from '@assets/defaultProfile2.jpg';
-import * as Linking from 'expo-linking';
+
+
+import ChangePassword from '@components/ChangePassword'
 
 export default function AccountInfo(props){
 
     const globalFontSize = GlobalFontSize();
+    const [changePassword, setChangePassword] = useState(false);
 
-    return(
-        <>
-            <View style={styles.accountContainer}>
-                <Image source={profilePicture} style={{width: 70, height: 70}}></Image>
-                <Text style={[globalFontSize.text, styles.accountText]}>Hello {props.username}!</Text>
+    function returnAccountInfo() {
+        setChangePassword(false);
+    }
 
-                <TouchableHighlight 
-                    style={styles.accountTouchableHighlight} 
+    if (!changePassword){
+        return(
+            <>
+                <View style={styles.accountContainer}>
+                    <Image source={profilePicture} style={{width: 70, height: 70}}></Image>
+                    <Text style={[globalFontSize.text, styles.accountText]}>Hello {props.username}!</Text>
+
+                    <TouchableHighlight 
+                        style={styles.accountTouchableHighlight} 
+                        underlayColor={"#DEB426"}
+                        onPress={() => {
+                            setChangePassword(true)
+                            }
+                        }>
+                            <Text style={[globalFontSize.text, styles.text]}>Change password</Text>
+                    </TouchableHighlight>
+
+                    <TouchableHighlight 
+                        style={styles.accountTouchableHighlight} 
+                        underlayColor={"#DEB426"}
+                        onPress={() => {
+                            Alert.alert("Coming soon")
+                            }
+                        }>
+                            <Text style={[globalFontSize.text, styles.text]}>Download flashcards</Text>
+                    </TouchableHighlight>
+
+                </View>
+
+                <View style={[styles.touchableHighlightView, {marginTop: 30}]}>
+                    <TouchableHighlight 
+                    style={styles.touchableHighlight} 
                     underlayColor={"#DEB426"}
-                    onPress={() => {
-                        Linking.openURL(`${API_URL}/users/viewcard`);
-                    }}>
-                        <Text style={[globalFontSize.text, styles.text]}>Download flashcards</Text>
-                </TouchableHighlight>
+                    onPress={() => {props.onLogout()}}>
+                        <Text style={[globalFontSize.text, styles.text]}>Log out</Text>
+                    </TouchableHighlight>
+                </View>
+            </>
+            
+        )
+    }
 
+    if (changePassword){
+        return(
+            <ChangePassword 
+                username={props.username} 
+                onReturn={returnAccountInfo}
+            />
+        )
+    }
 
-                <TouchableHighlight 
-                    style={styles.accountTouchableHighlight} 
-                    underlayColor={"#DEB426"}
-                    onPress={() => {
-                        Alert.alert("Coming soon")
-                        }
-                    }>
-                        <Text style={[globalFontSize.text, styles.text]}>Change password</Text>
-                </TouchableHighlight>
-
-            </View>
-
-            <View style={[styles.touchableHighlightView, {marginTop: 30}]}>
-                <TouchableHighlight 
-                style={styles.touchableHighlight} 
-                underlayColor={"#DEB426"}
-                onPress={() => {props.onLogout()}}>
-                    <Text style={[globalFontSize.text, styles.text]}>Log out</Text>
-                </TouchableHighlight>
-            </View>
-        </>
-        
-    )
 }
 
 const styles = StyleSheet.create({
     text: {
         textAlign: "center",
-    },
-    textInput: {
-        borderWidth: 0,
-        borderRadius: 20,
-        marginTop: 20,
-        marginBottom: 10,
-        padding: 20,
-        backgroundColor: "white"
     },
     touchableHighlightView:{
         flexDirection: "column",
@@ -89,10 +101,6 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         textAlign: "center",
     },
-    accountText2: {
-        marginTop: 35,
-        textAlign: "center",
-    },
     accountTouchableHighlight: {
         flexDirection: "row",
         width: 240,
@@ -102,6 +110,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 100,
-    }
+    },
 }
 )

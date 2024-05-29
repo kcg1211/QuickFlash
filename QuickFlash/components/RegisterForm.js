@@ -57,10 +57,10 @@ export default function RegisterForm(props){
         .then((res) => { 
             if (res.error) {
                 console.log(res);
-                Alert.alert("Duplicated username found. Please input again.");
+                Alert.alert("Error", "Duplicated username found. Please input again");
             } else {
                 console.log(res);
-                Alert.alert("Account registered.")
+                Alert.alert("Account registered")
             }
         })
       }
@@ -72,7 +72,7 @@ export default function RegisterForm(props){
                     </Text>
                     <TextInput 
                         style={styles.textInput} 
-                        placeholder=" Username"
+                        placeholder="Username"
                         autoCapitalize='none'
                         value={username}
                         onChangeText={setUsername}
@@ -81,7 +81,7 @@ export default function RegisterForm(props){
 
                     <TextInput 
                         style={styles.textInput} 
-                        placeholder=" Email"
+                        placeholder="Email"
                         autoCapitalize='none'
                         value={email}
                         onChangeText={setEmail}
@@ -90,7 +90,7 @@ export default function RegisterForm(props){
                     
                     <TextInput 
                         style={styles.textInput} 
-                        placeholder=" Password"
+                        placeholder="Password"
                         autoCapitalize='none'
                         value={password}
                         onChangeText={setPassword}
@@ -105,7 +105,7 @@ export default function RegisterForm(props){
                     </TouchableHighlight>
 
                     <TouchableHighlight 
-                        style={styles.touchableOpacity} 
+                        style={[styles.touchableOpacity, {marginTop: 40}]}
                         underlayColor={"#DEB426"}
                         onPress={() => props.onReturn()}>
                             <Text style={[globalFontSize.text, styles.text]}>Go back</Text>

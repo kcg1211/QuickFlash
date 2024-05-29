@@ -17,9 +17,8 @@ export default function LoginScreen() {
     const [password, setPassword] = useState("");
     const [hasLoggedIn, setHasLoggedIn] = useState(false);
     const [register, setRegister] = useState(false);
-
-    
     const [errors, setErrors] = useState({})
+
     const API_URL = `http://192.168.0.183:8000`;
 
     const validateForm = () => {
@@ -43,6 +42,7 @@ export default function LoginScreen() {
         }
 
     }
+
     async function userLogin() {
         try {
             const response = await fetch(`${API_URL}/users/login`, {
@@ -58,7 +58,7 @@ export default function LoginScreen() {
             const res = await response.json();
             if (res.error) {
                 console.log(res);
-                Alert.alert("Incorrect username or password");
+                Alert.alert("Error", "Incorrect username or password");
             } else {
                 console.log(res);
                 const token = res.token; // Retrieve the token from the response
@@ -74,6 +74,7 @@ export default function LoginScreen() {
         try {
             await AsyncStorage.removeItem('authToken');
             setHasLoggedIn(false);
+            Alert.alert("Success", "Logged out successfully")
             console.log('User logged out');
         } catch (error) {
             console.error('Error removing auth token:', error);
@@ -92,7 +93,7 @@ export default function LoginScreen() {
                         <Text style={[globalFontSize.text, styles.text]}>Input your login details</Text>
                         <TextInput 
                             style={styles.textInput} 
-                            placeholder=" Username or email address"
+                            placeholder="Username or email address"
                             autoCapitalize='none'
                             value={username}
                             onChangeText={setUsername}
@@ -101,7 +102,8 @@ export default function LoginScreen() {
                         
                         <TextInput 
                             style={styles.textInput} 
-                            placeholder=" Password"
+                            placeholder="Password"
+                            secureTextEntry
                             autoCapitalize='none'
                             value={password}
                             onChangeText={setPassword}
