@@ -42,7 +42,7 @@ export default function App() {
                   iconColor = focused ? "#509CD5" : color;
                 }
                 else if (route.name === "Account"){
-                  iconName = "cog"
+                  iconName = "account"
                   iconColor = focused ? "#509CD5" : color;
                 }
                 return <MaterialCommunityIcons name={iconName} size={size} color={iconColor} />;
