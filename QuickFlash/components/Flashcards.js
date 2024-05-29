@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, ActivityIndicator, TouchableOpacity, Alert } from "react-native";
 import { useFlashcards } from '@components/FlashcardAPI';
 import { GlobalFontSize } from '@styles/globalFontSize';
+import { GlobalDarkMode } from '@styles/globalDarkMode';
 import { GestureHandlerRootView, RectButton, Swipeable } from 'react-native-gesture-handler';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -9,6 +10,8 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 export default function Flashcards({ refresh, isShuffle }) {
 
     const globalFontSize = GlobalFontSize();
+    const globalDarkMode = GlobalDarkMode();
+
 
     const {loading, flashcards, error, fetchFlashcards} = useFlashcards();
     const [shuffledFlashcards, setShuffledFlashcards] = useState([]);
@@ -115,7 +118,7 @@ export default function Flashcards({ refresh, isShuffle }) {
     }
 
     return(
-        <View style={styles.cardContainer}>
+        <View>
             {shuffledFlashcards.map(flashcards => 
             <FlashcardView 
                 question={flashcards.question} 
@@ -213,14 +216,14 @@ export default function Flashcards({ refresh, isShuffle }) {
                     renderLeftActions={renderLeftActions}
                     renderRightActions={renderRightActions}
                     >
-                    <View style={styles.card}>
+                    <View style={[styles.card, globalDarkMode.view]}>
                             <View style={styles.cardContent}>
-                                <Text style={[globalFontSize.text, styles.text]}>{props.question}</Text>
+                                <Text style={[globalFontSize.text, styles.text, globalDarkMode.text]}>{props.question}</Text>
                             </View>
                             <TouchableOpacity style={styles.cardContent} underlayColor={"#E2E2E2"} onPress={toggleAnswer}>
                                 <View>
-                                    {isVisible === true ? null : <Text style={globalFontSize.text}>Show Answer</Text>}
-                                    {isVisible && <Text style={[styles.answer, globalFontSize.text]}>{props.answer}</Text>}
+                                    {isVisible === true ? null : <Text style={[globalFontSize.text, globalDarkMode.text, {marginRight: 25}]}>Show Answer</Text>}
+                                    {isVisible && <Text style={[styles.answer, globalFontSize.text, globalDarkMode.text]}>{props.answer}</Text>}
                                 </View>
                             </TouchableOpacity>
                     </View>

@@ -3,6 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
 import { FontSizeProvider } from "@context/fontsize";
+import { DarkModeProvider } from "@context/darkmode";
 import * as SplashScreen from 'expo-splash-screen';
 
 import CardScreen from "@screens/CardScreen";
@@ -22,6 +23,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <FontSizeProvider>
+      <DarkModeProvider>
         {/* ThemeContext context is applied to all tabs */}
         <Tab.Navigator
           screenOptions={({route}) => {
@@ -37,12 +39,12 @@ export default function App() {
                   iconName = "card-plus"
                   iconColor = focused ? "#509CD5" : color;
                 }
-                else if (route.name === "Settings"){
-                  iconName = "cog"
-                  iconColor = focused ? "#509CD5" : color;
-                }
                 else if (route.name === "Account"){
                   iconName = "account"
+                  iconColor = focused ? "#509CD5" : color;
+                }
+                else if (route.name === "Settings"){
+                  iconName = "cog"
                   iconColor = focused ? "#509CD5" : color;
                 }
                 return <MaterialCommunityIcons name={iconName} size={size} color={iconColor} />;
@@ -55,11 +57,11 @@ export default function App() {
                 else if (route.name === "Add Cards") {
                   label = "Add Cards";
                 }
-                else if (route.name === "Settings") {
-                  label = "Settings";
-                }
                 else if (route.name === "Account") {
                   label = "Account";
+                }
+                else if (route.name === "Settings") {
+                  label = "Settings";
                 }
                 return <Text style={[{ color: focused ? "#509CD5" : color }, styles.text]}>{label}</Text>;
               },
@@ -83,9 +85,10 @@ export default function App() {
           >
           <Tab.Screen name="Cards" component={CardScreen} />
           <Tab.Screen name="Add Cards" component={AddCardScreen} />
-          <Tab.Screen name="Settings" component={SettingsScreen} />
           <Tab.Screen name="Account" component={AccountScreen} />
+          <Tab.Screen name="Settings" component={SettingsScreen} />
         </Tab.Navigator>
+      </DarkModeProvider>
       </FontSizeProvider>
     </NavigationContainer>
   );

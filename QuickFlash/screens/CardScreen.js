@@ -7,7 +7,7 @@ import { GlobalFontSize } from '@styles/globalFontSize';
 export default function CardScreen() {
 
   const globalFontSize = GlobalFontSize();
-
+  
   // refreshing: for triggering the refresh effect for RefreshControl
   // refresh: for passing into Flashcards component to fetch flashcards from API again
   const [refreshing, setRefreshing] = useState(false);
@@ -37,7 +37,7 @@ export default function CardScreen() {
       </View>
       <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}></RefreshControl>}>
         {/* value of refresh is being passed into Flashcard as props */}
-        <Flashcards refresh={refresh} isShuffle={isShuffle}/>
+        <Flashcards refresh={refresh} isShuffle={isShuffle} />
       </ScrollView>
     </GlobalLayout>
   );
