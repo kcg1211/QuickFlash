@@ -6,11 +6,13 @@ import profilePicture from '@assets/defaultProfile2.jpg';
 
 import ChangePassword from '@components/ChangePassword'
 
+ // ==================================== Account info view after logged in ====================================
 export default function AccountInfo(props){
 
     const globalFontSize = GlobalFontSize();
     const [changePassword, setChangePassword] = useState(false);
 
+    // Function to pass in to views to handle 'Go back'
     function returnAccountInfo() {
         setChangePassword(false);
     }
@@ -57,6 +59,7 @@ export default function AccountInfo(props){
         )
     }
 
+    // ==================================== Generating changing password view ====================================
     if (changePassword){
         return(
             <ChangePassword 

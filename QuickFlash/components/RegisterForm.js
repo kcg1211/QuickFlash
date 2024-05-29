@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableHighlight, KeyboardAvoidingView, Alert } from "react-native";
+import { Text, TextInput, StyleSheet, TouchableHighlight, KeyboardAvoidingView, Alert } from "react-native";
 import { GlobalFontSize } from '@styles/globalFontSize';
 
+// ==================================== New user register view ====================================
 export default function RegisterForm(props){
 
     const globalFontSize = GlobalFontSize();
@@ -9,7 +10,6 @@ export default function RegisterForm(props){
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [isRegistered, setIsRegistered] = useState(false)
     
     const [errors, setErrors] = useState({})
     const API_URL = `http://192.168.0.183:8000`;
@@ -41,6 +41,7 @@ export default function RegisterForm(props){
 
     }
 
+    // Posting the new user registration to database
     function userRegister() {
         fetch(`${API_URL}/users/register`, {
           method: "POST",
@@ -60,58 +61,58 @@ export default function RegisterForm(props){
                 Alert.alert("Error", "Duplicated username found. Please input again");
             } else {
                 console.log(res);
-                Alert.alert("Account registered")
+                Alert.alert("Success", "Account registered successfully")
             }
         })
       }
 
     return(
-                <KeyboardAvoidingView style={styles.keyboardAvoidingView}  keyboardVerticalOffset={100}>
-                    <Text style={[globalFontSize.text, styles.text]}>
-                        Input your new account details. All fields are required.
-                    </Text>
-                    <TextInput 
-                        style={styles.textInput} 
-                        placeholder="Username"
-                        autoCapitalize='none'
-                        value={username}
-                        onChangeText={setUsername}
-                    />
-                    {errors.username && <Text style={[globalFontSize.text, styles.errorText]}>{errors.username}</Text>}
+        <KeyboardAvoidingView style={styles.keyboardAvoidingView}  keyboardVerticalOffset={100}>
+            <Text style={[globalFontSize.text, styles.text]}>
+                Input your new account details. All fields are required.
+            </Text>
+            <TextInput 
+                style={styles.textInput} 
+                placeholder="Username"
+                autoCapitalize='none'
+                value={username}
+                onChangeText={setUsername}
+            />
+            {errors.username && <Text style={[globalFontSize.text, styles.errorText]}>{errors.username}</Text>}
 
-                    <TextInput 
-                        style={styles.textInput} 
-                        placeholder="Email"
-                        autoCapitalize='none'
-                        value={email}
-                        onChangeText={setEmail}
-                    />
-                    {errors.email && <Text style={[globalFontSize.text, styles.errorText]}>{errors.email}</Text>}
-                    
-                    <TextInput 
-                        style={styles.textInput} 
-                        placeholder="Password"
-                        autoCapitalize='none'
-                        value={password}
-                        onChangeText={setPassword}
-                    />
-                    {errors.password && <Text style={[globalFontSize.text, styles.errorText]}>{errors.password}</Text>}
-                    
-                    <TouchableHighlight 
-                        style={styles.touchableOpacity} 
-                        underlayColor={"#DEB426"}
-                        onPress={handleRegister}>
-                            <Text style={[globalFontSize.text, styles.text]}>Register</Text>
-                    </TouchableHighlight>
+            <TextInput 
+                style={styles.textInput} 
+                placeholder="Email"
+                autoCapitalize='none'
+                value={email}
+                onChangeText={setEmail}
+            />
+            {errors.email && <Text style={[globalFontSize.text, styles.errorText]}>{errors.email}</Text>}
+            
+            <TextInput 
+                style={styles.textInput} 
+                placeholder="Password"
+                autoCapitalize='none'
+                value={password}
+                onChangeText={setPassword}
+            />
+            {errors.password && <Text style={[globalFontSize.text, styles.errorText]}>{errors.password}</Text>}
+            
+            <TouchableHighlight 
+                style={styles.touchableOpacity} 
+                underlayColor={"#DEB426"}
+                onPress={handleRegister}>
+                    <Text style={[globalFontSize.text, styles.text]}>Register</Text>
+            </TouchableHighlight>
 
-                    <TouchableHighlight 
-                        style={[styles.touchableOpacity, {marginTop: 40}]}
-                        underlayColor={"#DEB426"}
-                        onPress={() => props.onReturn()}>
-                            <Text style={[globalFontSize.text, styles.text]}>Go back</Text>
-                    </TouchableHighlight>
-                    
-                </KeyboardAvoidingView>
+            <TouchableHighlight 
+                style={[styles.touchableOpacity, {marginTop: 40}]}
+                underlayColor={"#DEB426"}
+                onPress={() => props.onReturn()}>
+                    <Text style={[globalFontSize.text, styles.text]}>Go back</Text>
+            </TouchableHighlight>
+            
+        </KeyboardAvoidingView>
     )
 }
 

@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, TouchableHighlight, Alert, TextInput } from "re
 import { GlobalFontSize } from '@styles/globalFontSize';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// ==================================== Changing password view ====================================
 export default function ChangePassword(props){
 
     const globalFontSize = GlobalFontSize();
@@ -32,9 +33,9 @@ export default function ChangePassword(props){
         if(validateForm()){
             userChangePassword();
         }
-
     }
 
+    // Getting the token from AsyncStorage and pass to database for authorisation to change password
     const getToken = async () => {
         try {
             const savedToken = await AsyncStorage.getItem('authToken');
@@ -61,6 +62,7 @@ export default function ChangePassword(props){
             return;
         }
 
+        // Putting the new password to database
         try {
             const response = await fetch(`${API_URL}/users/changepassword`, {
                 method: 'PUT',

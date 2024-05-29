@@ -2,14 +2,12 @@ import { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableHighlight, KeyboardAvoidingView, Alert, Image } from "react-native";
 import GlobalLayout from "@components/Layout";
 import { GlobalFontSize } from '@styles/globalFontSize';
-import profilePicture from '@assets/defaultProfile2.jpg';
-import * as Linking from 'expo-linking';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 
 import RegisterForm from '@components/RegisterForm';
 import AccountInfo from '@components/AccountInfo';
 
+// ==================================== Main login view ====================================
 export default function LoginScreen() {
     const globalFontSize = GlobalFontSize();
 
@@ -43,6 +41,7 @@ export default function LoginScreen() {
 
     }
 
+    // Posting login credentials to database for server-side validation and generating token from middleware
     async function userLogin() {
         try {
             const response = await fetch(`${API_URL}/users/login`, {
@@ -61,8 +60,8 @@ export default function LoginScreen() {
                 Alert.alert("Error", "Incorrect username or password");
             } else {
                 console.log(res);
-                const token = res.token; // Retrieve the token from the response
-                await AsyncStorage.setItem('authToken', token); // Store the token in AsyncStorage
+                const token = res.token; // Token is returned from the response
+                await AsyncStorage.setItem('authToken', token); // Storing the token in AsyncStorage
                 setHasLoggedIn(true);
             }
         } catch (error) {
@@ -70,6 +69,7 @@ export default function LoginScreen() {
         }
     }
 
+    // Logging out and removing token from AsyncStorage
     async function userLogout() {
         try {
             await AsyncStorage.removeItem('authToken');
@@ -81,6 +81,7 @@ export default function LoginScreen() {
         }
     }
 
+    // Function to pass in to views to handle 'Go back'
     function returnAccountScreen(){
         setHasLoggedIn(false);
         setRegister(false);
@@ -135,7 +136,7 @@ export default function LoginScreen() {
             </GlobalLayout>
         )
     }
-    // a new view will be generated when the user is logged in
+    // ==================================== Generating account info view after logged in ====================================
     else if(hasLoggedIn){
         return(
             <GlobalLayout>
@@ -147,6 +148,7 @@ export default function LoginScreen() {
         )
     }
 
+    // ==================================== Generating new user register view  ====================================
     else if(register){
         return(
             <GlobalLayout>

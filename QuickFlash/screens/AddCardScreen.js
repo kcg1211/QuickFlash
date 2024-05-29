@@ -28,7 +28,6 @@ export default function AddCardScreen() {
 
     const handleSubmission = () => {
         if(validateForm()){
-            // console.log(`Your new flashcard has been updated. Question: ${question}, Answer: ${answer}`);
             addNewCard();
             setDescription("A new flashcard has been added! ");
             setTimeout(() => {
@@ -41,6 +40,7 @@ export default function AddCardScreen() {
 
     }
 
+    /* Posting a new  flashcard to the database */
     function addNewCard() {
         fetch(`${API_URL}/api/newcard`, {
           method: "POST",
