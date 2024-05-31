@@ -11,7 +11,8 @@ export default function AddCardScreen() {
     const [question, setQuestion] = useState("");
     const [answer, setAnswer] = useState("");
     const [errors, setErrors] = useState({})
-    const API_URL = `http://192.168.0.183:8000`;
+
+    const API_URL = process.env.API_URL;
 
     const validateForm = () => {
         let errors = {};
@@ -67,7 +68,7 @@ export default function AddCardScreen() {
                     <Text style={[globalFontSize.text, styles.text]}>{description}</Text>
                     <TextInput 
                         style={styles.textInput} 
-                        placeholder=" New question"
+                        placeholder="New question"
                         autoCapitalize='none'
                         value={question}
                         onChangeText={setQuestion}
@@ -75,8 +76,8 @@ export default function AddCardScreen() {
                     {errors.question && <Text style={[globalFontSize.text, styles.errorText]}>{errors.question}</Text>}
                     
                     <TextInput 
-                        style={styles.textInput} 
-                        placeholder=" New answer"
+                        style={styles.textInput}  
+                        placeholder="New answer"
                         autoCapitalize='none'
                         value={answer}
                         onChangeText={setAnswer}
@@ -105,7 +106,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
         marginBottom: 10,
         padding: 20,
-        backgroundColor: "white"
+        backgroundColor: "white",
     },
     touchableOpacity: {
         flexDirection: "row",

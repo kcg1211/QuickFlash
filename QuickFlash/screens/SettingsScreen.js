@@ -19,7 +19,6 @@ export default function SettingsScreen() {
   const {isDarkMode, setIsDarkMode} = useDarkMode();
 
   const globalFontSize = GlobalFontSize();
-  const globalDarkMode = GlobalDarkMode();
 
   return (
     <GlobalLayout>
@@ -49,7 +48,7 @@ export default function SettingsScreen() {
                 trackColor={{ false: "#767577", true: "#81b0ff" }}
                 // trackColor prop: set the color of the switch track when the switch is in the on and off positions
             />
-            <Text style={globalFontSize.text}> Dark Mode</Text>
+            <Text style={globalFontSize.text}> Dark Cards</Text>
           </View>
         
       </View>

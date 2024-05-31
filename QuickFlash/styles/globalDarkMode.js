@@ -6,12 +6,16 @@ export function GlobalDarkMode(){
     // needs to get the value idLargeText from context, so to determine the font size
 
     const styles = StyleSheet.create({
-        view, textInput:{
+        view:{
             backgroundColor: isDarkMode ? "#414141":"white",
         },
         text:{
             color: isDarkMode ? "white": "black",
-        } 
+        },
+        textInput:{
+            backgroundColor: isDarkMode ? "#414141":"white",
+            color: isDarkMode ? "white" : "black",
+        },
     })
 
     return styles;

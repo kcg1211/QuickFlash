@@ -16,7 +16,7 @@ export default function Flashcards({ refresh, isShuffle }) {
     const {loading, flashcards, error, fetchFlashcards} = useFlashcards();
     const [shuffledFlashcards, setShuffledFlashcards] = useState([]);
 
-    const API_URL = `http://192.168.0.183:8000`;
+    const API_URL = process.env.API_URL;
 
     // ==================================== Fetching flahcards from API ====================================
 
