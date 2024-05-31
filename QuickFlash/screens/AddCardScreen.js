@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableHighlight, KeyboardAvoidingView } from "react-native";
+import { View, Text, TextInput, StyleSheet, TouchableHighlight, KeyboardAvoidingView, Alert } from "react-native";
 import GlobalLayout from "@components/Layout";
 import { GlobalFontSize } from '@styles/globalFontSize';
 
@@ -55,6 +55,9 @@ export default function AddCardScreen() {
         .then((res) => res.json())
         .then((res) => { 
           console.log(res);
+        }).catch(error => {
+            console.error("Error adding card", error);
+            Alert.alert("Error", "Network error. Please try again")
         })
       }
 

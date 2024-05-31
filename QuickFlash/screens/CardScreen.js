@@ -35,7 +35,7 @@ export default function CardScreen() {
         <Text style={[styles.text, globalFontSize.text]}>Shuffle</Text>
       </TouchableHighlight>
       </View>
-      <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}></RefreshControl>}>
+      <ScrollView style={styles.scrollView} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}></RefreshControl>}>
         {/* value of refresh is being passed into Flashcard as props */}
         <Flashcards refresh={refresh} isShuffle={isShuffle} />
       </ScrollView>

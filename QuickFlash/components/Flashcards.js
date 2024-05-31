@@ -79,7 +79,10 @@ export default function Flashcards({ refresh, isShuffle }) {
           .then((res) => res.json())
           .then((res) => { 
             console.log(res);
-          })
+          }).catch(error => {
+            console.error("Error deleting", error);
+            Alert.alert("Error", "Network error. Please try again")
+        })
     };
 
     // ==================================== Edit function of flahcards ====================================
@@ -101,20 +104,29 @@ export default function Flashcards({ refresh, isShuffle }) {
           .then((res) => res.json())
           .then((res) => { 
             console.log(res);
-          })
+          }).catch(error => {
+            console.error("Error editting", error);
+            Alert.alert("Error", "Network error. Please try again")
+        })
     };
 
 
     // ==================================== Showing the flashcards with loading and error handling ====================================
     if (loading){
-            <View>
+        return(
+            <>
                 <ActivityIndicator />
-                <Text style={globalFontSize.text}>Now loading...</Text>
-            </View>
+                <Text style={[styles.errorText, globalFontSize.text]}>Now loading cards...</Text>
+            </>
+        )
     }
 
     if (error){
-            <View><Text style={globalFontSize.text}>{error}</Text></View>
+        return(
+            
+                <Text style={[styles.errorText, globalFontSize.text]}>{error}</Text>
+            
+        )  
     }
 
     return(
@@ -208,8 +220,6 @@ export default function Flashcards({ refresh, isShuffle }) {
             );
         }
 
-
-        
         return(
             <GestureHandlerRootView>
                     <Swipeable
@@ -236,6 +246,10 @@ export default function Flashcards({ refresh, isShuffle }) {
 
 
 const styles = StyleSheet.create({
+    errorText: {
+        textAlign: "center",
+        marginTop: 20
+    },
     card: {
         flexDirection: 'row',
         height: 100,

@@ -22,27 +22,34 @@ router.post("/register", (req, res) => {
     });
   }
 
-  const queryUsers = req.db.from("user").select("username").where("username", "=", username);
-  // **** check if user already exists in database ****
-  queryUsers.then(users => {
-    if (users.length > 0) {
-      res.status(400).json({
-        error: true,
-        message: "User already exists"
-      });
-      return
-    }
-    // **** if user is new, hash their password
-    const saltRounds = 10;
-    const hash = bcrypt.hashSync(password, saltRounds);
-    return req.db.from("user").insert({ username, email, hash });
+  try{
+    const queryUsers = req.db.from("user").select("username").where("username", "=", username);
+    // **** check if user already exists in database ****
+    queryUsers.then(users => {
+      if (users.length > 0) {
+        res.status(400).json({
+          error: true,
+          message: "User already exists"
+        });
+        return
+      }
+      // **** if user is new, hash their password
+      const saltRounds = 10;
+      const hash = bcrypt.hashSync(password, saltRounds);
+      return req.db.from("user").insert({ username, email, hash });
 
-  }).then(() => {
-    res.status(201).json({
-      error: false,
-      message: "User created"
+    }).then(() => {
+      res.status(201).json({
+        error: false,
+        message: "User created"
+      })
     })
-  })
+  } catch (error){
+      res.status(500).json({
+        error: true,
+        message: "Internal server error"
+      })
+  }
 });
 
 

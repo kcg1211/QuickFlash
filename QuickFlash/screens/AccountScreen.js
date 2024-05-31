@@ -66,6 +66,7 @@ export default function LoginScreen() {
             }
         } catch (error) {
             console.error('Error:', error);
+            Alert.alert("Error", "Network error. Please try again")
         }
     }
 

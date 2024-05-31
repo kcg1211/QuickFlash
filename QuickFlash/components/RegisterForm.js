@@ -15,12 +15,15 @@ export default function RegisterForm(props){
     const API_URL = `http://192.168.0.183:8000`;
 
     const validateForm = () => {
+
+        const pattern = /^\S+@\S+$/i
         let errors = {};
+
         if(!username){
             errors.username = "Please input a user name"
         };
-        if(!email){
-            errors.email = "Please input an email address"
+        if(!email || !pattern.test(email)){
+            errors.email = "Please input a valid email address"
         };
         if(!password){
             errors.password = "Please input a password"
@@ -44,14 +47,14 @@ export default function RegisterForm(props){
     // Posting the new user registration to database
     function userRegister() {
         fetch(`${API_URL}/users/register`, {
-          method: "POST",
-          body: JSON.stringify({ 
+        method: "POST",
+        body: JSON.stringify({ 
                 "username":username,
                 "email": email,
                 "password":password
             }),
-          headers: {
-              "Content-type": "application/json"
+        headers: {
+            "Content-type": "application/json"
             }
         })
         .then((res) => res.json())
@@ -63,8 +66,11 @@ export default function RegisterForm(props){
                 console.log(res);
                 Alert.alert("Success", "Account registered successfully")
             }
+        }).catch(error => {
+            console.error("Error registering", error);
+            Alert.alert("Error", "Network error. Please try again")
         })
-      }
+    }
 
     return(
         <KeyboardAvoidingView style={styles.keyboardAvoidingView}  keyboardVerticalOffset={100}>
@@ -93,6 +99,7 @@ export default function RegisterForm(props){
                 style={styles.textInput} 
                 placeholder="Password"
                 autoCapitalize='none'
+                secureTextEntry
                 value={password}
                 onChangeText={setPassword}
             />
