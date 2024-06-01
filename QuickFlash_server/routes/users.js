@@ -24,7 +24,7 @@ router.post("/register", (req, res) => {
 
   try{
     const queryUsers = req.db.from("user").select("username").where("username", "=", username);
-    // **** check if user already exists in database ****
+    // check if user already exists in database ****
     queryUsers.then(users => {
       if (users.length > 0) {
         res.status(400).json({
@@ -33,7 +33,7 @@ router.post("/register", (req, res) => {
         });
         return
       }
-      // **** if user is new, hash their password
+      // if user is new, hash their password
       const saltRounds = 10;
       const hash = bcrypt.hashSync(password, saltRounds);
       return req.db.from("user").insert({ username, email, hash });
@@ -52,10 +52,12 @@ router.post("/register", (req, res) => {
   }
 });
 
-
 // ====================== LOGIN ======================
 // Verifying user details for login and generating a JWT token
 router.post("/login", (req, res) => {
+
+  const AUTHORISATION_SECRET_KEY = process.env.AUTHORISATION_SECRET_KEY;
+
   const emailOrUsername = req.body.emailOrUsername;
   const password = req.body.password;
 
@@ -67,7 +69,7 @@ router.post("/login", (req, res) => {
   }
 
   /* Only username will be queried in the database, meaning that email address is only used for validating login. 
-  All API interaction will be based on username afterwards*/
+  All API interaction will be based on username afterwards */
   const queryUsers = req.db.from("user")
     .select("username", "hash")
     .where("email", "=", emailOrUsername)
@@ -91,10 +93,10 @@ router.post("/login", (req, res) => {
           });
         }
         else{
-          const secretKey = "secretKey" // Secret key should be stored in .env
-          const expires_in = 60 * 60 * 24; // 24 hours
+          const secretKey = AUTHORISATION_SECRET_KEY // Secret key should be stored in .env
+          const expires_in = 60 * 60 * 24;
 
-          const exp = Math.floor(Date.now() / 1000) + expires_in; // JWT expiration time in seconds
+          const exp = Math.floor(Date.now() / 1000) + expires_in;
           const token = jwt.sign({ emailOrUsername, exp }, secretKey);
 
           return res.json({ token_type: "Bearer", token, expires_in });

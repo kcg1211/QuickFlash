@@ -8,12 +8,18 @@
 -- PRIMARY KEY(cardID)
 -- );
 
+-- CREATE TABLE user (
+-- id INT(10) NOT NULL AUTO_INCREMENT,
+-- email VARCHAR(60) NOT NULL UNIQUE,
+-- username VARCHAR(60) NOT NULL UNIQUE,
+-- `hash` VARCHAR(512) NOT NULL,
+-- PRIMARY KEY(id)
+-- );
+
+-- ==== default flashcards ====
 -- INSERT INTO card (question, answer) VALUES("食べる", "to eat");
-
 -- INSERT INTO card (question, answer) VALUES("歩く", "to walk");
-SELECT * FROM card;
+-- SELECT * FROM card;
 
--- INSERT INTO `user` (email, username, `hash`) VALUES("test@gmail.com", "test", "123");
--- SELECT * FROM `user`;
 
 

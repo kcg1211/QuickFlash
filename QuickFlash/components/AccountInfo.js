@@ -41,7 +41,7 @@ export default function AccountInfo(props){
                             Alert.alert("Coming soon")
                             }
                         }>
-                            <Text style={[globalFontSize.text, styles.text]}>Download flashcards</Text>
+                            <Text style={[globalFontSize.text, styles.text]}>Export flashcards</Text>
                     </TouchableHighlight>
 
                 </View>

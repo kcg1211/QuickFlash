@@ -10,6 +10,7 @@ import CardScreen from "@screens/CardScreen";
 import SettingsScreen from "@screens/SettingsScreen";
 import AddCardScreen from "@screens/AddCardScreen";
 import AccountScreen from "@screens/AccountScreen";
+import AboutScreen from "@screens/AboutScreen";
 
 
 SplashScreen.preventAutoHideAsync();
@@ -47,6 +48,10 @@ export default function App() {
                   iconName = "cog"
                   iconColor = focused ? "#509CD5" : color;
                 }
+                else if (route.name === "About"){
+                  iconName = "information"
+                  iconColor = focused ? "#509CD5" : color;
+                }
                 return <MaterialCommunityIcons name={iconName} size={size} color={iconColor} />;
               },
               tabBarLabel: ({ focused, color }) => {
@@ -62,6 +67,9 @@ export default function App() {
                 }
                 else if (route.name === "Settings") {
                   label = "Settings";
+                }
+                else if (route.name === "About") {
+                  label = "About";
                 }
                 return <Text style={[{ color: focused ? "#509CD5" : color }, styles.text]}>{label}</Text>;
               },
@@ -87,6 +95,7 @@ export default function App() {
           <Tab.Screen name="Add Cards" component={AddCardScreen} />
           <Tab.Screen name="Account" component={AccountScreen} />
           <Tab.Screen name="Settings" component={SettingsScreen} />
+          <Tab.Screen name="About" component={AboutScreen} />
         </Tab.Navigator>
       </DarkModeProvider>
       </FontSizeProvider>
