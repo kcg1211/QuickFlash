@@ -3,7 +3,6 @@ import { useFontSize } from '@context/fontsize';
 
 export function GlobalFontSize(){
     const {isLargeText} = useFontSize();
-    // needs to get the value idLargeText from context, so to determine the font size
 
     const styles = StyleSheet.create({
         text:{

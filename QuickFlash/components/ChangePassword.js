@@ -38,7 +38,7 @@ export default function ChangePassword(props){
     // Getting the token from AsyncStorage and pass to database for authorisation to change password
     const getToken = async () => {
         try {
-            const savedToken = await AsyncStorage.getItem('authToken');
+            const savedToken = await AsyncStorage.getIem('authToken');
             if (savedToken) {
                 setToken(savedToken);
             }
