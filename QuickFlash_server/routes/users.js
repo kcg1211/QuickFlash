@@ -93,7 +93,7 @@ router.post("/login", (req, res) => {
           });
         }
         else{
-          const secretKey = AUTHORISATION_SECRET_KEY // Secret key should be stored in .env
+          const secretKey = AUTHORISATION_SECRET_KEY
           const expires_in = 60 * 60 * 24;
 
           const exp = Math.floor(Date.now() / 1000) + expires_in;

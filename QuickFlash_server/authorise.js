@@ -19,7 +19,7 @@ const authorise = (req, res, next) => {
     }
   
     try {
-      const secretKey = AUTHORISATION_SECRET_KEY; // Secret key should be stored in .env
+      const secretKey = AUTHORISATION_SECRET_KEY;
       const decoded = jwt.verify(token, secretKey);
   
       if (decoded.exp < Math.floor(Date.now() / 1000)) {
