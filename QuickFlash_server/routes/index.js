@@ -1,5 +1,8 @@
 var express = require('express');
 var router = express.Router();
+// const licenseCrawler = require('license-crawler');
+// const fs = require('fs');
+// const path = require('path');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -111,5 +114,28 @@ router.put('/api/editcard', (req, res) => {
 
   }
 })
+
+// router.get('/licenses', (req, res) => {
+//     const options = {
+//         start: ['../..'],
+//         exclude: ['.'],
+//       json: 'licenses.json',
+//       exclude: ['.git', 'node_modules']
+//     };
+  
+//     licenseCrawler.dumpLicenses(options, (error, licenses) => {
+//       if (error) {
+//         return res.status(500).send('Error occurred while crawling licenses');
+//       }
+  
+//       fs.readFile(path.join(__dirname, 'licenses.json'), 'utf8', (err, data) => {
+//         if (err) {
+//           return res.status(500).send('Error reading licenses file');
+//         }
+//         res.header("Access-Control-Allow-Origin", "*");
+//         res.send(data);
+//       });
+//     });
+//   });
 
 module.exports = router;

@@ -7,12 +7,12 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 const fs = require("fs"); 
+const licenseChecker = require('license-checker');
 
 const options = require("./db");
 const knex = require("knex")(options); // **** connecting db.js to knex ****
 const helmet = require('helmet');
 const cors = require('cors');
-
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -47,6 +47,29 @@ app.use("/version", (req, res) => {
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+
+// endpoint of /license to get license info from crawler
+app.get('/licenses', (req, res) => {
+  const options = {
+    start: process.cwd(), // Start from the current working directory
+    json: true,
+  };
+
+  licenseChecker.init(options, (error, licenses) => {
+    if (error) {
+      return res.status(500).send('Error occurred while fetching licenses');
+    }
+
+    const licenseData = Object.keys(licenses).map(packageName => {
+      return {
+        package: packageName,
+      };
+    });
+
+    res.header("Access-Control-Allow-Origin", "*");
+    res.json(licenseData);
+  });
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
