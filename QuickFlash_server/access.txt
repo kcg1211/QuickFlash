@@ -2051,3 +2051,6 @@
 ::ffff:172.20.10.5 - - [02/Jun/2024:01:35:49 +0000] "GET /api/flashcard HTTP/1.1" 304 -
 ::ffff:172.20.10.5 - - [02/Jun/2024:01:35:50 +0000] "GET /api/flashcard HTTP/1.1" 304 -
 ::ffff:172.20.10.5 - - [02/Jun/2024:01:38:23 +0000] "GET /api/flashcard HTTP/1.1" 304 -
+::1 - - [02/Jun/2024:02:33:29 +0000] "GET /api/flashcard HTTP/1.1" 304 -
+::1 - - [02/Jun/2024:02:34:07 +0000] "GET /api/flashcard HTTP/1.1" 304 -
+::ffff:10.88.19.124 - - [02/Jun/2024:02:35:00 +0000] "GET /api/flashcard HTTP/1.1" 200 186
