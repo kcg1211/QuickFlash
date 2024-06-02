@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 async function getFlashcards() {
   const API_URL = process.env.API_URL;
-  const url = `${API_URL}/api/flashcar`;
+  const url = `${API_URL}/api/flashcard`;
   
   let res = await fetch(url);
   let jData = await res.json();
